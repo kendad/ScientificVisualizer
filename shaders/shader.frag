@@ -7,6 +7,8 @@ in vec3 gPos;
 in float gScalar;
 in vec3 gBarycentric;
 
+//uniform received from the user interface
+uniform int colorMapType;
 uniform bool showWireFrame;
 
 vec3 lightPosition = vec3(0.0f,2.0f,0.0f);//top of the model
@@ -66,7 +68,7 @@ void main(){
   float NdotL_scaled = NdotL *0.5f +0.5f;
 
   //Get the color based on the choosen colormap
-  vec3 dataColor = viridis(gScalar);
+  vec3 dataColor = (colorMapType==0) ? viridis(gScalar) : jet(gScalar);
 
   //GOOCH LIGHTING
   float dataColorStrength = 0.8f;
@@ -74,7 +76,7 @@ void main(){
   vec3 warm = warmColor + dataColorStrength * dataColor;
 
   //WIREFRAME
-  float edgeFactor = 1.0;
+  float edgeFactor = 1.0;//intially do not show the wireframe
   if(showWireFrame){
   float thickness = 0.05f;
 

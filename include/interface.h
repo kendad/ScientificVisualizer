@@ -11,7 +11,7 @@
 class UserInterface {
 public:
   // UI State Variables
-  int selectedColorMap = 0;   // 0->Virdis Color Map & 1->Jet Color Map
+  int colorMapType = 0;       // 0->Virdis Color Map & 1->Jet Color Map
   bool showWireFrame = false; // toggle on/off the wireframe mode
 
   UserInterface(GLFWwindow *window) {
@@ -38,7 +38,15 @@ public:
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("Controls");
+    // Set the Interface top left of the screen
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+
+    ImGui::Begin("Controls", NULL, ImGuiWindowFlags_AlwaysAutoResize);
+
+    // Dropdown Menu to select the Color Map
+    const char *dropdownItems[] = {"Virdis", "Jet"};
+    ImGui::Combo("ColorMap", &colorMapType, dropdownItems,
+                 IM_ARRAYSIZE(dropdownItems));
 
     // Toggle wireframe mode
     ImGui::Checkbox("Enable wireframe", &showWireFrame);
@@ -49,6 +57,7 @@ public:
   }
 
   void updateShaders(Shader &shader) {
+    shader.setInt("colorMapType", colorMapType);
     shader.setBool("showWireFrame", showWireFrame);
   }
 };
