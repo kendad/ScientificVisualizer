@@ -2,17 +2,21 @@
 
 out vec4 FragColor;
 
-in vec3 fNormal;
-in vec3 fPos;
-in float fScalar;
+in vec3 gNormal;
+in vec3 gPos;
+in float gScalar;
+in vec3 gBarycentric;
+
+uniform bool showWireFrame;
 
 vec3 lightPosition = vec3(0.0f,2.0f,0.0f);//top of the model
-vec3 surfaceBaseColor = vec3(0.7f,0.7f,0.7f);
 
 //GOOCH COLOR RAMP
 vec3 coolColor = vec3(0.0f,0.0f,0.55);//vertices facing away from the light will have cool blue color
 vec3 warmColor = vec3(0.3,0.3,0.0);//vertices facing towards the light will have warm yellow color
 
+//WireFrame color
+vec3 wireframeColor = vec3(1.0f,1.0f,1.0f);//white color
 
 //Fucntion to generate a VIRIDIS colormap
 vec3 viridis(float t){
@@ -46,13 +50,14 @@ vec3 jet(float t){
   return vec3(r,g,b);
 }
 
+//MAIN 
 void main(){
 
   //Normal
-  vec3 n = normalize(fNormal);
+  vec3 n = normalize(gNormal);
 
   //a vector pointing from the vertex position to the light position
-  vec3 lightDir = normalize(lightPosition-fPos);
+  vec3 lightDir = normalize(lightPosition-gPos);
 
   //Dot Product between vertex normal(N) and light Direction(L)
   float NdotL = dot(n,lightDir);//in range[-1,1]
@@ -61,14 +66,29 @@ void main(){
   float NdotL_scaled = NdotL *0.5f +0.5f;
 
   //Get the color based on the choosen colormap
-  vec3 dataColor = viridis(fScalar);
+  vec3 dataColor = viridis(gScalar);
 
   //GOOCH LIGHTING
   float dataColorStrength = 0.8f;
   vec3 cool = coolColor + dataColorStrength * dataColor;
   vec3 warm = warmColor + dataColorStrength * dataColor;
 
+  //WIREFRAME
+  float edgeFactor = 1.0;
+  if(showWireFrame){
+  float thickness = 0.05f;
+
+  //find the minimum distance to any edge
+  float distanceFromEdge = min(min(gBarycentric.x,gBarycentric.y),gBarycentric.z);
+
+  //step interpolation based on the distanceFromEdge
+  //it will be 0.0 if distanceFromEdge < thickness else 1.0
+  edgeFactor = step(thickness , distanceFromEdge);
+  }
+
+
   vec3 finalColor = mix(cool,warm,NdotL_scaled);
+  finalColor = mix(wireframeColor,finalColor,edgeFactor);
 
   FragColor = vec4(finalColor , 1.0f);
 }

@@ -18,6 +18,13 @@ set(
   SOURCE_FILES
   src/main.cpp
   src/glad.c
+  src/imgui/imgui.cpp
+  src/imgui/imgui.cpp
+  src/imgui/imgui_draw.cpp
+  src/imgui/imgui_widgets.cpp
+  src/imgui/imgui_tables.cpp
+  src/imgui/imgui_impl_glfw.cpp
+  src/imgui/imgui_impl_opengl3.cpp
 )
 
 find_package(glfw3 REQUIRED)
@@ -29,7 +36,11 @@ find_package(assimp REQUIRED)
 
 add_executable(baseOpenGL ${SOURCE_FILES})
 
-target_include_directories(baseOpenGL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(
+  baseOpenGL PUBLIC 
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/imgui
+)
 
 target_link_libraries(
   baseOpenGL 

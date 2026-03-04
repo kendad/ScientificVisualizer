@@ -110,6 +110,11 @@ public:
     glUniform3fv(uniformLoc, 1, glm::value_ptr(value));
   }
 
+  void setBool(const std::string &uniformName, bool &value) {
+    unsigned int uniformLoc = glGetUniformLocation(ID, uniformName.c_str());
+    glUniform1i(uniformLoc, value);
+  }
+
 private:
   void checkErrors(unsigned int shader, std::string type) {
     int success;

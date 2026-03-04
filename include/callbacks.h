@@ -1,6 +1,7 @@
 #pragma once
 
 #include "camera.h"
+#include "imgui.h"
 #include <GLFW/glfw3.h>
 
 // Callback for when the user types in the keyboard
@@ -23,6 +24,12 @@ extern Camera camera; // the camera object is defined in the main.cpp file
 // this is when we update our camera position
 static void mouse_pos_callback(GLFWwindow *window, double xPosIn,
                                double yPosIn) {
+  // if the mouse is over the imgui window prevent it from modifying the camera
+  ImGuiIO &io = ImGui::GetIO();
+  if (io.WantCaptureMouse) {
+    return;
+  }
+
   float xPos = static_cast<float>(xPosIn);
   float yPos = static_cast<float>(yPosIn);
 
@@ -45,6 +52,12 @@ static void mouse_pos_callback(GLFWwindow *window, double xPosIn,
 // Callback for when the mouse button is pressed
 static void mouse_button_callback(GLFWwindow *window, int button, int action,
                                   int mods) {
+  // if the mouse is over the imgui window prevent it from modifying the camera
+  ImGuiIO &io = ImGui::GetIO();
+  if (io.WantCaptureMouse) {
+    return;
+  }
+
   if (button == GLFW_MOUSE_BUTTON_LEFT)
     camera.isLeftMouseButtonPressed = (action == GLFW_PRESS);
 }

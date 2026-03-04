@@ -17,6 +17,7 @@
 
 #include "callbacks.h"
 #include "camera.h"
+#include "interface.h"
 #include "model.h"
 
 struct WindowSize {
@@ -59,6 +60,9 @@ int main() {
   glfwSetMouseButtonCallback(window, mouse_button_callback);
   glfwSetScrollCallback(window, mouse_scroll_callback);
 
+  // Intialize User Interface after GLAD
+  UserInterface ui(window);
+
   Model bunnyModel("../resources/bunny.obj");
 
   // Shaders
@@ -95,7 +99,14 @@ int main() {
     shader.setMat4("view", view);
     shader.setMat4("projection", projection);
 
+    // Update the shader uniforms
+    ui.updateShaders(shader);
+
+    // render the model
     bunnyModel.Draw();
+
+    // render the UI
+    ui.render();
 
     // check for user inputs and swap buffers
     glfwSwapBuffers(window);
