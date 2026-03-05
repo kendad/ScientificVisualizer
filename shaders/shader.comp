@@ -1,6 +1,6 @@
 #version 460 core
 
-//Handel 456 vertices per workgroup
+//Handel 256 vertices per workgroup
 layout(local_size_x = 256) in;
 
 //VBO is in format [vec3 position vec3 normal]
@@ -26,10 +26,20 @@ void main(){
 
   Vertex v = inputVertices[idx];
 
-  float dx = cos(v.position.x * 10.0f) * 10.0f;
-  float dz = -sin(v.position.z * 10.0f) * 10.0f;
+  //Define a height function as similar to the one ine vertex shader 
+  //f(x,z) = y --> xz plane and the y is the height
+  // f(x,z) = sin(x.frequency) + cos(z.frequency)
+  float frequency = 100.0f;
 
-  v.scalar = clamp(sqrt(dx*dz + dz*dz)/10.0f, 0.0f , 1.0f);
+  //diffrention of the sin(x.frequency) and cos(z.frequency)
+  //tells us how much the height will change in X and Z
+  float dx = cos(v.position.x * frequency) * frequency;
+  float dz = -sin(v.position.z * frequency) * frequency;
+
+  //magnitude of the total steepness
+  //scaled by (frequency * 1.41421356) which removes the frequency term given by the derivation and root(2) which is the maximum possible value for our square root to normalize it
+  v.scalar = clamp(sqrt(dx*dx + dz*dz)/(frequency*1.41421356f), 0.0f , 1.0f);
+  // v.scalar = dx + dz;
 
   outputVertices[idx]=v;
 }

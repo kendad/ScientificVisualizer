@@ -22,7 +22,7 @@ public:
   float scalarRange[2] = {
       0.0f, 1.0f}; // the scalar field value in the shader will be in range[0,1]
 
-  int scalarSource = 0; // 0 for choosing the scalar from computedShader and 1
+  int scalarSource = 1; // 0 for choosing the scalar from computedShader and 1
                         // for Synthetic one calculated in vertex shader
 
   UserInterface(GLFWwindow *window) {

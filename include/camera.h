@@ -56,8 +56,10 @@ public:
   void processMouseScroll(float yOffset) {
     zoom -=
         yOffset * mouseZoomSensitivity; // reducing increased the zooming effect
+
     // constrain ZOOM to certain level
-    zoom = std::clamp(zoom, 0.1f, 2.0f);
+    zoom = std::clamp(zoom, 0.2f, 0.7f);
+
     updateCameraPosition();
   }
 
