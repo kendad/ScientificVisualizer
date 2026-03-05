@@ -9,6 +9,7 @@ in vec3 gBarycentric;
 
 //uniform received from the user interface
 uniform int colorMapType;
+uniform vec2 scalarRange;//.x->lowerLimit and .y->upperLimit
 uniform bool showWireFrame;
 
 vec3 lightPosition = vec3(0.0f,2.0f,0.0f);//top of the model
@@ -68,7 +69,13 @@ void main(){
   float NdotL_scaled = NdotL *0.5f +0.5f;
 
   //Get the color based on the choosen colormap
-  vec3 dataColor = (colorMapType==0) ? viridis(gScalar) : jet(gScalar);
+  vec3 dataColor;
+  if(gScalar < scalarRange.x || gScalar > scalarRange.y){
+    //this is the out of bound range and colors it gray
+    dataColor = vec3(0.25f,0.25f,0.25f);
+  }else{
+    dataColor = (colorMapType==0) ? viridis(gScalar) : jet(gScalar);
+  }
 
   //GOOCH LIGHTING
   float dataColorStrength = 0.8f;

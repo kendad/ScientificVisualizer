@@ -110,6 +110,16 @@ public:
     glUniform3fv(uniformLoc, 1, glm::value_ptr(value));
   }
 
+  void setVec2(const std::string &uniformName, glm::vec2 &value) {
+    unsigned int uniformLoc = glGetUniformLocation(ID, uniformName.c_str());
+    glUniform2fv(uniformLoc, 1, glm::value_ptr(value));
+  }
+
+  void setVec2(const std::string &uniformName, const float *value) {
+    unsigned int uniformLoc = glGetUniformLocation(ID, uniformName.c_str());
+    glUniform2fv(uniformLoc, 1, value);
+  }
+
   void setBool(const std::string &uniformName, bool &value) {
     unsigned int uniformLoc = glGetUniformLocation(ID, uniformName.c_str());
     glUniform1i(uniformLoc, value);

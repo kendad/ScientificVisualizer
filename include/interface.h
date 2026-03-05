@@ -13,6 +13,8 @@ public:
   // UI State Variables
   int colorMapType = 0;       // 0->Virdis Color Map & 1->Jet Color Map
   bool showWireFrame = false; // toggle on/off the wireframe mode
+  float scalarRange[2] = {
+      0.0f, 1.0f}; // the scalar field value in the shader will be in range[0,1]
 
   UserInterface(GLFWwindow *window) {
     // IMGUI context
@@ -48,6 +50,10 @@ public:
     ImGui::Combo("ColorMap", &colorMapType, dropdownItems,
                  IM_ARRAYSIZE(dropdownItems));
 
+    // Slider to change the scalar field range
+    ImGui::DragFloatRange2("Scalar Range", &scalarRange[0], &scalarRange[1],
+                           0.01f, 0.0f, 1.0f, "Low: %.3f", "High: %.3f");
+
     // Toggle wireframe mode
     ImGui::Checkbox("Enable wireframe", &showWireFrame);
 
@@ -58,6 +64,7 @@ public:
 
   void updateShaders(Shader &shader) {
     shader.setInt("colorMapType", colorMapType);
+    shader.setVec2("scalarRange",scalarRange);
     shader.setBool("showWireFrame", showWireFrame);
   }
 };
