@@ -97,6 +97,34 @@ public:
       glDeleteShader(geometry);
   }
 
+  // Compute Shader
+  Shader(const char *computePath) {
+    std::string computeCode;
+    std::ifstream cShaderFile;
+    cShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try {
+      cShaderFile.open(computePath);
+      std::stringstream cShaderStream;
+      cShaderStream << cShaderFile.rdbuf();
+      cShaderFile.close();
+      computeCode = cShaderStream.str();
+    } catch (std::ifstream::failure &e) {
+      std::cout << "ERROR::COMPUTE_SHADER::FILE_NOT_READ" << std::endl;
+    }
+
+    const char *cShaderSource = computeCode.c_str();
+    unsigned int compute = glCreateShader(GL_COMPUTE_SHADER);
+    glShaderSource(compute, 1, &cShaderSource, NULL);
+    glCompileShader(compute);
+    checkErrors(compute, "COMPUTE");
+
+    ID = glCreateProgram();
+    glAttachShader(ID, compute);
+    glLinkProgram(ID);
+    checkErrors(ID, "PROGRAM");
+    glDeleteShader(compute);
+  }
+
   void use() { glUseProgram(ID); }
 
   // SHADER UTILITY FUNCTIONS

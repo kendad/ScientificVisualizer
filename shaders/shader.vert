@@ -2,6 +2,7 @@
 
 layout (location=0) in vec3 aPos;
 layout (location=1) in vec3 aNormal;
+layout (location=2) in float aScalar;
 
 
 uniform mat4 model;
@@ -14,13 +15,20 @@ out float vScalar;//for each vertex we will genearte a scalar value
 
 uniform float displacementScale;
 
+//Choose from either the GPU computed one or vertex computed one
+uniform int scalarSource;
+
 void main(){
+  if(scalarSource==1){
   //Generate Synthetic scalar value
   //range [-1,1]
   float s = sin(aPos.x * 50.0f) * cos(aPos.z *50.0f);
 
   //vScalar in range [0,1]
   vScalar = s * 0.5 + 0.5;
+  }else{
+    vScalar = aScalar;
+  }
 
   //Displace the vertex along its normal scaled by this Synthetic scalar value
   vec3 displacedPos = aPos + (aNormal * vScalar * displacementScale);

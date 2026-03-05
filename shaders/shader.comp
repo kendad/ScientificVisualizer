@@ -1,0 +1,35 @@
+#version 460 core
+
+//Handel 456 vertices per workgroup
+layout(local_size_x = 256) in;
+
+//VBO is in format [vec3 position vec3 normal]
+struct Vertex{
+  vec3 position;
+  float scalar;//also helps in padding the extra 4 bytes
+  vec3 normal;
+  float padding2;//additional padding of 4 bytes
+};
+
+//Binding 0 has the VBO access
+layout(std430 , binding = 0) buffer VertexBuffer{Vertex inputVertices[];};
+
+//Binding 1 has the empty buffer
+layout(std430 , binding = 1) buffer OutputBuffer{Vertex outputVertices[];};
+
+//Binding 1 has the EBO access
+layout(std430 , binding = 2) buffer IndexBuffer{uint indices[];};
+
+void main(){
+  uint idx = gl_GlobalInvocationID.x;
+  if(idx >= inputVertices.length()) return;
+
+  Vertex v = inputVertices[idx];
+
+  float dx = cos(v.position.x * 10.0f) * 10.0f;
+  float dz = -sin(v.position.z * 10.0f) * 10.0f;
+
+  v.scalar = clamp(sqrt(dx*dz + dz*dz)/10.0f, 0.0f , 1.0f);
+
+  outputVertices[idx]=v;
+}

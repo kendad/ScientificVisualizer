@@ -68,6 +68,18 @@ int main() {
   // Shaders
   Shader shader("../shaders/shader.vert", "../shaders/shader.frag",
                 "../shaders/shader.geom");
+  // Compute Shader
+  Shader computeShader("../shaders/shader.comp");
+
+  // use the Computer Shader to smoothen out the model
+  computeShader.use();
+  // computeShader.setInt("indexCount",
+  // (int)bunnyModel.meshes[0].indices.size()); totalNumber vertice to process /
+  // NumberOfThreads per group will give the worker group size
+  //
+  glDispatchCompute((bunnyModel.meshes[0].vertices.size() + 255) / 256, 1, 1);
+  glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT |
+                  GL_BUFFER_UPDATE_BARRIER_BIT);
 
   // Render Loop
   glEnable(GL_DEPTH_TEST);
