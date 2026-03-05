@@ -21,6 +21,8 @@ A Scientific Field Visualizer implemented in C++ using OpenGl. It supports the f
     * Based on the Scalar Filed a certain range can be set in the UI that will draw Contour Lines along those values
     * A Compute Shader Pass that generates its own derived scalar field which we can switch in between the vertex shader generated one and the compute shader genearted one in the UI.
 
+Would like to have more time with my compute shaders to do much more complex calculations
+
 ```
 This Application has been developed in Ubuntu Operating System
 
