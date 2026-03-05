@@ -11,6 +11,7 @@ in vec3 gBarycentric;
 uniform int colorMapType;
 uniform vec2 scalarRange;//.x->lowerLimit and .y->upperLimit
 uniform bool showWireFrame;
+uniform float isoLineValue;
 
 vec3 lightPosition = vec3(0.0f,2.0f,0.0f);//top of the model
 
@@ -20,6 +21,9 @@ vec3 warmColor = vec3(0.3,0.3,0.0);//vertices facing towards the light will have
 
 //WireFrame color
 vec3 wireframeColor = vec3(1.0f,1.0f,1.0f);//white color
+
+//Contour Line color
+vec3 isoLineColor = vec3(0.85f,0.85f,0.85f);
 
 //Fucntion to generate a VIRIDIS colormap
 vec3 viridis(float t){
@@ -77,13 +81,9 @@ void main(){
     dataColor = (colorMapType==0) ? viridis(gScalar) : jet(gScalar);
   }
 
-  //GOOCH LIGHTING
-  float dataColorStrength = 0.8f;
-  vec3 cool = coolColor + dataColorStrength * dataColor;
-  vec3 warm = warmColor + dataColorStrength * dataColor;
-
   //WIREFRAME
   float edgeFactor = 1.0;//intially do not show the wireframe
+
   if(showWireFrame){
   float thickness = 0.05f;
 
@@ -95,9 +95,25 @@ void main(){
   edgeFactor = step(thickness , distanceFromEdge);
   }
 
-
+  //GOOCH LIGHTING
+  float dataColorStrength = 0.8f;
+  vec3 cool = coolColor + dataColorStrength * dataColor;
+  vec3 warm = warmColor + dataColorStrength * dataColor;
   vec3 finalColor = mix(cool,warm,NdotL_scaled);
-  finalColor = mix(wireframeColor,finalColor,edgeFactor);
+
+  //CONTOUR LINES
+  float contourLineThickness = 0.03f;
+  //line mask in a  range between the user defined isoLineValue and
+  // and the isoLineThickness.... lets say isoLineValue is 0.5 and isoLineThickness is
+  // 0.1 then line mask is in range 0.5 to 0.6 anything above and below this range will
+  // be normal color and in range will be the controur lines
+  //Below 0.5 => 0.0 - 0.0 = 0.0(finalColor)
+  //Above 0.6 => 1.0 - 1.0 = 0.0(finalColor)
+  //between [0.5 - 0.6] => 1.0 - 0.0 = 1.0(Contour Line Color)
+  float lineMask = step(isoLineValue,gScalar) - step(isoLineValue+contourLineThickness,gScalar );
+  vec3 dataColorWithContourLines = mix(finalColor,isoLineColor ,lineMask );
+
+  finalColor = mix(wireframeColor,dataColorWithContourLines,edgeFactor);
 
   FragColor = vec4(finalColor , 1.0f);
 }

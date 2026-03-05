@@ -98,13 +98,21 @@ public:
   }
 
   void use() { glUseProgram(ID); }
+
+  // SHADER UTILITY FUNCTIONS
   void setInt(const std::string &uniformName, int value) {
     glUniform1i(glGetUniformLocation(ID, uniformName.c_str()), value);
   }
+
+  void setFloat(const std::string &uniformName, float value) {
+    glUniform1f(glGetUniformLocation(ID, uniformName.c_str()), value);
+  }
+
   void setMat4(const std::string &uniformName, glm::mat4 &value) {
     unsigned int uniformLoc = glGetUniformLocation(ID, uniformName.c_str());
     glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(value));
   }
+
   void setVec3(const std::string &uniformName, glm::vec3 &value) {
     unsigned int uniformLoc = glGetUniformLocation(ID, uniformName.c_str());
     glUniform3fv(uniformLoc, 1, glm::value_ptr(value));

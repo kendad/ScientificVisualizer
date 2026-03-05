@@ -12,7 +12,13 @@ class UserInterface {
 public:
   // UI State Variables
   int colorMapType = 0;       // 0->Virdis Color Map & 1->Jet Color Map
+
   bool showWireFrame = false; // toggle on/off the wireframe mode
+                              
+  float displacementScale = 0.0f;//Scale the vector Displacement
+
+  float isoLineValue = 1.0f;//Contour lines
+
   float scalarRange[2] = {
       0.0f, 1.0f}; // the scalar field value in the shader will be in range[0,1]
 
@@ -54,6 +60,13 @@ public:
     ImGui::DragFloatRange2("Scalar Range", &scalarRange[0], &scalarRange[1],
                            0.01f, 0.0f, 1.0f, "Low: %.3f", "High: %.3f");
 
+    // Slider to Control the displacementScale
+    ImGui::SliderFloat("Displacement Scale", &displacementScale, 0.0f, 0.05f,
+                       "Displacement Scale: %.3f");
+
+    //Slider to Control the user defined Contour lines
+    ImGui::SliderFloat("Contour Lines",&isoLineValue,0.0f,1.0f);
+
     // Toggle wireframe mode
     ImGui::Checkbox("Enable wireframe", &showWireFrame);
 
@@ -64,7 +77,9 @@ public:
 
   void updateShaders(Shader &shader) {
     shader.setInt("colorMapType", colorMapType);
-    shader.setVec2("scalarRange",scalarRange);
+    shader.setVec2("scalarRange", scalarRange);
+    shader.setFloat("displacementScale",displacementScale);
+    shader.setFloat("isoLineValue",isoLineValue);
     shader.setBool("showWireFrame", showWireFrame);
   }
 };
