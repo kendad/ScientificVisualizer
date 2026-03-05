@@ -24,6 +24,10 @@ A Scientific Field Visualizer implemented in C++ using OpenGl. It supports the f
 ```
 This Application has been developed in Ubuntu Operating System
 
+# Clone the Repo
+git clone https://github.com/kendad/ScientificVisualizer.git
+cd ScientificVisualizer
+
 # Dependencies can be Installed using 
 sudo apt update
 sudo apt install build-essential cmake libglfw3-dev libassimp-dev libglm-dev libgl1-mesa-dev
