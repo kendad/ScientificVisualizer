@@ -1,5 +1,5 @@
 # Scientific Field Visualizer written in OpenGl/C++
-
+![DEMO](/resources/demo.gif)
 A Scientific Field Visualizer implemented in C++ using OpenGl. It supports the following 
 
 # Features
@@ -23,9 +23,6 @@ A Scientific Field Visualizer implemented in C++ using OpenGl. It supports the f
 
 ```
 This Application has been developed in Ubuntu Operating System
-# Prerequisites
-CMake(version 3.10 or higher)
-C/C++ Compiler (GCC or Clang)
 
 # Dependencies can be Installed using 
 sudo apt update
