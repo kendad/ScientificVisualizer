@@ -36,8 +36,8 @@ int main() {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   // Rendering Window
-  GLFWwindow *window =
-      glfwCreateWindow(windowSize.width, windowSize.height, "Base", NULL, NULL);
+  GLFWwindow *window = glfwCreateWindow(windowSize.width, windowSize.height,
+                                        "Scientific Visualizer", NULL, NULL);
   if (window == NULL) {
     std::cout << "failed to create GLFW Window" << std::endl;
     glfwTerminate();

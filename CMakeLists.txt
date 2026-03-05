@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(
-  BaseOpenGL
+  ScientificVisualizer
   VERSION 1.0.0
   DESCRIPTION "The base for OpengGL"
   LANGUAGES C CXX
@@ -34,16 +34,19 @@ find_package(OpenGL REQUIRED)
 
 find_package(assimp REQUIRED)
 
-add_executable(baseOpenGL ${SOURCE_FILES})
+add_executable(
+  ScientificVisualizer
+  ${SOURCE_FILES})
 
 target_include_directories(
-  baseOpenGL PUBLIC 
+  ScientificVisualizer
+  PUBLIC 
   ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${CMAKE_CURRENT_SOURCE_DIR}/include/imgui
 )
 
-target_link_libraries(
-  baseOpenGL 
+target_link_libraries( 
+  ScientificVisualizer
   glfw
   OpenGL::GL
   assimp::assimp

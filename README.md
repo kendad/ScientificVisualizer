@@ -20,3 +20,27 @@ A Scientific Field Visualizer implemented in C++ using OpenGl. It supports the f
     * A UI Slider that helps to displace the vertex along its normals in the vertex shader
     * Based on the Scalar Filed a certain range can be set in the UI that will draw Contour Lines along those values
     * A Compute Shader Pass that generates its own derived scalar field which we can switch in between the vertex shader generated one and the compute shader genearted one in the UI.
+
+```
+This Application has been developed in Ubuntu Operating System
+# Prerequisites
+CMake(version 3.10 or higher)
+C/C++ Compiler (GCC or Clang)
+
+# Dependencies can be Installed using 
+sudo apt update
+sudo apt install build-essential cmake libglfw3-dev libassimp-dev libglm-dev libgl1-mesa-dev
+
+# Build and Compile the Project
+mkdir build
+cd build
+cmake ..
+
+# Run the program by going to the compiled build folder
+cmake --build .
+
+# This will create an executable called "ScientificVisualizer"
+./ScientificVisualizer
+    NOTE:- [make it an executable the first time you are running it by running]
+    chmod +x ScientificVisualizer
+```
